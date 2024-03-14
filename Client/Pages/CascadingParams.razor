@@ -1,0 +1,12 @@
+﻿@page "/cascading-params"
+@using HPCTech2024SpringProjectBoilerPlate.Client.Components
+
+<h3>CascadingParams</h3>
+
+<CascadingValue Value="@TheAnswer">
+    <FooComponent someparam="Eric" />
+</CascadingValue>
+
+@code {
+    int TheAnswer = 42;
+}

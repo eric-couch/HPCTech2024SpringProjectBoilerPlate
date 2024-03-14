@@ -1,0 +1,26 @@
+﻿@page "/students"
+
+@using HPCTech2024SpringProjectBoilerPlate.Shared
+@inject HttpClient Http
+
+<h3>Students</h3>
+
+@foreach (var student in students)
+{
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@student.FirstName</h5>
+            <h5 class="card-title">@student.LastName</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@student.Email</h6>
+        </div>
+    </div>
+}
+
+@code {
+    public List<Student>? students { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        students = await Http.GetFromJsonAsync<List<Student>>("api/students");
+    }
+}

@@ -1,0 +1,18 @@
+﻿@page "/todo"
+@using HPCTech2024SpringProjectBoilerPlate.Shared
+<h3>Todo @todoItems.Count() (@todoItems.Count(todo => !@todo.IsDone))</h3>
+
+<ul>
+    @foreach (var todoItem in todoItems)
+    {
+        <li>
+            <input type="checkbox" @bind="todoItem.IsDone" />
+            <input type="text" @bind="todoItem.Title" disabled="@todoItem.IsDone" />
+        </li>
+    }
+</ul>
+
+<input placeholder="something todo" @bind="newTodo" />
+<button @onclick="AddTodo">Add todo</button>
+
+

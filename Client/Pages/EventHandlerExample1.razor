@@ -1,0 +1,28 @@
+﻿@page "/event-handler-example1"
+@inject IJSRuntime JSRuntime
+
+<h3>EventHandlerExample1</h3>
+
+<input type="text" @onkeypress="ChangeOnFly" />
+<p>@outputValue</p>
+
+<button @onclick="ClickedEvent">Click me</button>
+
+@code {
+    //private string? inputValue { get; set;}
+    private string? outputValue { get; set; }
+
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        outputValue = $"Input was changed to: {e.Value}";
+
+    }
+
+    private void ChangeOnFly(KeyboardEventArgs e)
+    {
+        outputValue += e.Key;
+        //outputValue = $"Input was changed to: {e.Key}";
+    }
+
+    private void ClickedEvent(MouseEventArgs e) => JSRuntime.InvokeVoidAsync("alert", "we clicked the button");
+}
