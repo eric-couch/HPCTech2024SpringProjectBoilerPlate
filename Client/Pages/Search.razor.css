@@ -1,0 +1,14 @@
+﻿::deep .quickgrid[theme=corporate] {
+    font-family: Verdana, 'Times New Roman', serif;
+    color: black;
+}
+
+    ::deep .quickgrid[theme=corporate] .col-title {
+        gap: 0.4rem; /* Separate the sort indicator from title text */
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    ::deep .quickgrid[theme=corporate] .sort-indicator {
+        color: blue;
+    }
