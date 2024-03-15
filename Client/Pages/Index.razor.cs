@@ -15,7 +15,7 @@ public partial class Index
     private readonly string OMDBAPIUrl = "https://www.omdbapi.com/?apikey=";
     private readonly string OMDBAPIKey = "86c39163";
     public List<OMDBMovie> UserFavoriteMovies { get; set; } = new();
-
+    public OMDBMovie Movie { get; set; }
     protected override async Task OnInitializedAsync()
     {
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
@@ -31,5 +31,11 @@ public partial class Index
                 }
             }
         }
+    }
+
+    private async Task ShowMovieDetails(OMDBMovie movie)
+    {
+        Movie = movie;
+        await Task.CompletedTask;
     }
 }

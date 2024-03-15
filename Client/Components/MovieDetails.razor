@@ -1,0 +1,22 @@
+﻿@if (Movie is not null)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="@Movie.Poster" alt="@Movie.Title" class="img-fluid" />
+            </div>
+            <div class="col-md-8">
+                <h2>@Movie.Title</h2>
+                <p>@Movie.Plot</p>
+                <p>Director: @Movie.Director</p>
+                <p>Actors: @Movie.Actors</p>
+                <p>Genre: @Movie.Genre</p>
+                <p>Released: @Movie.Released</p>
+                <p>Runtime: @Movie.Runtime</p>
+                <p>Rated: @Movie.Rated</p>
+                <p>IMDB Rating: @Movie.imdbRating</p>
+                <p>Box Office: @Movie.BoxOffice</p>
+            </div>
+        </div>
+    </div>
+}

@@ -1,13 +1,14 @@
 ﻿@page "/"
+@using HPCTech2024SpringProjectBoilerPlate.Client.Components
 
 @if (UserFavoriteMovies?.Any() ?? false)
 {
     <ul>
-        @foreach (var movie in UserFavoriteMovies)
-        {
-            <li>@movie.Title <img src="@($"https://img.omdbapi.com/?apikey=86c39163&i={movie.imdbID}")"/></li>
-
-        }
+    @foreach (var movie in UserFavoriteMovies)
+    {
+            <li><a href="#" @onclick="@(() => ShowMovieDetails(movie))" @onclick:preventDefault style="text-decoration:none;color:black">  @movie.Title (@movie.Year)</a></li>
+    }
     </ul>
+    <MovieDetails Movie=Movie />
 }
 
