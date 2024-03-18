@@ -22,12 +22,38 @@ public partial class Search
     private readonly string OMDBAPIKey = "86c39163";
     public SfGrid<MovieSearchResultItem> movieGrid;
     public SfPager Page;
+    //private List<MovieSearchResultItem> SelectedMovies { get; set; } = new List<MovieSearchResultItem>();
+    private MovieSearchResultItem SelectedMovie { get; set; }
 
 
     public async Task PageClick(PagerItemClickEventArgs args)
     {
         page = args.CurrentPage;
         await SearchOMDB();
+    }
+
+    public async Task GetSelectedRows(RowSelectEventArgs<MovieSearchResultItem> args)
+    {
+        //SelectedMovies = await movieGrid.GetSelectedRecordsAsync();
+        SelectedMovie = args.Data;
+    }
+
+    public async Task ToolbarClickHandler(ClickEventArgs args)
+    {
+        if (args.Item.Id == "GridMovieAdd")
+        {
+            if (SelectedMovie is not null)
+            {
+                //foreach (var movie in SelectedMovies)
+                //{
+                    Movie newMovie = new Movie
+                    {
+                        imdbId = SelectedMovie.imdbID
+                    };
+                    var res = await Http.PostAsJsonAsync($"api/add-movie", newMovie);
+                //}
+            }
+        }
     }
 
     private async Task SearchOMDB()

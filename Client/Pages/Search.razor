@@ -19,13 +19,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
+                
                 <SfPager @ref="Page" PageSize="10" TotalItemsCount="TotalItems" ItemClick="PageClick">
 
                 </SfPager>
                 <SfGrid     DataSource="OMDBMovies"
                             TValue="MovieSearchResultItem"
                             @ref="movieGrid"
+                            Toolbar="@(new List<object>() { new ItemModel() { Text = "Add Movie", PrefixIcon="e-add", Id="GridMovieAdd"}})"
                             AllowSorting="true">
+                    <GridEvents TValue="MovieSearchResultItem"
+                                OnToolbarClick="ToolbarClickHandler"
+                                RowSelected="GetSelectedRows"
+                    ></GridEvents>
                     <GridColumns>
                         <GridColumn Field="Title" HeaderText="Movie Title" Width="200"></GridColumn>
                         <GridColumn Field="Year" HeaderText="Year Released" Width="100"></GridColumn>
