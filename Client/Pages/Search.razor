@@ -1,5 +1,7 @@
 ﻿@page "/search"
-@using Microsoft.AspNetCore.Components.QuickGrid
+@using Syncfusion.Blazor.Grids
+@using HPCTech2024SpringProjectBoilerPlate.Shared
+@using Syncfusion.Blazor.Navigations
 
 <label>Search</label>
 <div class="container-fluid mb-5">
@@ -14,12 +16,25 @@
 </div>
 @if (OMDBMovies is not null)
 {
-    <div class="grid">
-        <QuickGrid Items="OMDBMovies" Theme="corporate">
-            <PropertyColumn Property="@(m => m.Title)" Title="Title" />
-            <PropertyColumn Property="@(m => m.Year)" Title="Year" />
-            <PropertyColumn Property="@(m => m.Type)" Title="Type" />  
-        </QuickGrid>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <SfPager @ref="Page" PageSize="10" TotalItemsCount="TotalItems" ItemClick="PageClick">
+
+                </SfPager>
+                <SfGrid     DataSource="OMDBMovies"
+                            TValue="MovieSearchResultItem"
+                            @ref="movieGrid"
+                            AllowSorting="true">
+                    <GridColumns>
+                        <GridColumn Field="Title" HeaderText="Movie Title" Width="200"></GridColumn>
+                        <GridColumn Field="Year" HeaderText="Year Released" Width="100"></GridColumn>
+                        <GridColumn Field="Type" HeaderText="Movie/Series/Episode" Width="100"></GridColumn>
+                    </GridColumns>
+                </SfGrid>
+
+            </div>
+        </div>
     </div>
 }
 

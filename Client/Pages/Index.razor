@@ -1,5 +1,8 @@
 ﻿@page "/"
 @using HPCTech2024SpringProjectBoilerPlate.Client.Components
+@using Syncfusion.Blazor.Spinner
+@using Syncfusion.Blazor.Buttons
+
 
 @if (UserFavoriteMovies?.Any() ?? false)
 {
@@ -11,4 +14,3 @@
     </ul>
     <MovieDetails Movie=Movie />
 }
-
