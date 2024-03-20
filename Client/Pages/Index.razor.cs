@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components;
 using HPCTech2024SpringProjectBoilerPlate.Shared;
+using HPCTech2024SpringProjectBoilerPlate.Shared.Wrapper;
 using System.Net.Http.Json;
+using HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
+using Syncfusion.Blazor.Notifications;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Client.Pages;
 
@@ -10,25 +13,28 @@ public partial class Index
     [Inject]
     AuthenticationStateProvider AuthenticationStateProvider { get; set; }
     [Inject]
-    HttpClient Http { get; set; }
+    public IUserHttpRepository UserMoviesHttpRepository { get; set; }
 
-    private readonly string OMDBAPIUrl = "https://www.omdbapi.com/?apikey=";
-    private readonly string OMDBAPIKey = "86c39163";
     public List<OMDBMovie> UserFavoriteMovies { get; set; } = new();
     public OMDBMovie Movie { get; set; }
+
+    public SfToast ToastObj;
+    private string? toastContent = string.Empty;
+    private string? toastSuccess = "e-toast-success";
     protected override async Task OnInitializedAsync()
     {
         var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
         if (UserAuth is not null && UserAuth.IsAuthenticated)
         {
-            UserDto userDto = await Http.GetFromJsonAsync<UserDto>("api/user?userName=" + UserAuth.Name);
-            if (userDto?.FavoriteMovies?.Any() ?? false)
+            DataResponse<List<OMDBMovie>> dataResponse = await UserMoviesHttpRepository.GetUserMovies(UserAuth.Name);
+            if (dataResponse.Succeeded)
             {
-                foreach (var movie in userDto.FavoriteMovies)
-                {
-                    OMDBMovie oMDBMovie = await Http.GetFromJsonAsync<OMDBMovie>($"{OMDBAPIUrl}{OMDBAPIKey}&i={movie.imdbId}");
-                    UserFavoriteMovies.Add(oMDBMovie);
-                }
+                UserFavoriteMovies = dataResponse.Data;
+            } else
+            {
+                toastContent = "Error retrieving user favorite movies";
+                toastSuccess = "e-toast-danger";
+                await ToastObj.ShowAsync();
             }
         }
     }

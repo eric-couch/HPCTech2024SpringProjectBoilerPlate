@@ -2,6 +2,7 @@
 @using Syncfusion.Blazor.Grids
 @using HPCTech2024SpringProjectBoilerPlate.Shared
 @using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Notifications
 
 <label>Search</label>
 <div class="container-fluid mb-5">
@@ -44,3 +45,11 @@
     </div>
 }
 
+<SfToast    @ref="ToastObj"
+            Content="@toastContent"
+            ShowCloseButton="true"
+            ShowProgressBar="true"
+            CssClass="@toastSuccess"
+            Timeout="3000">
+        <ToastPosition X="Center" Y="Top"></ToastPosition>
+</SfToast>

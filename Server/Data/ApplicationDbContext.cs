@@ -16,4 +16,5 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     }
 
     public DbSet<Movie> Movies => Set<Movie>();
+
 }

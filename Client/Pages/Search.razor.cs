@@ -5,6 +5,8 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
+using Syncfusion.Blazor.Notifications;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Client.Pages;
 
@@ -12,6 +14,8 @@ public partial class Search
 {
     [Inject]
     HttpClient Http { get; set; }
+    [Inject]
+    AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
     private string searchTerm;
     private MovieSearchResult searchResults = new MovieSearchResult();
@@ -22,6 +26,10 @@ public partial class Search
     private readonly string OMDBAPIKey = "86c39163";
     public SfGrid<MovieSearchResultItem> movieGrid;
     public SfPager Page;
+    public SfToast ToastObj;
+    private string? toastContent = string.Empty;
+    private string? toastSuccess = "e-toast-success";
+
     //private List<MovieSearchResultItem> SelectedMovies { get; set; } = new List<MovieSearchResultItem>();
     private MovieSearchResultItem SelectedMovie { get; set; }
 
@@ -34,7 +42,6 @@ public partial class Search
 
     public async Task GetSelectedRows(RowSelectEventArgs<MovieSearchResultItem> args)
     {
-        //SelectedMovies = await movieGrid.GetSelectedRecordsAsync();
         SelectedMovie = args.Data;
     }
 
@@ -44,14 +51,41 @@ public partial class Search
         {
             if (SelectedMovie is not null)
             {
-                //foreach (var movie in SelectedMovies)
-                //{
-                    Movie newMovie = new Movie
+                Movie newMovie = new Movie
+                {
+                    imdbId = SelectedMovie.imdbID
+                };
+
+                var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+                if (UserAuth is not null && UserAuth.IsAuthenticated)
+                {
+                    var res = await Http.PostAsJsonAsync($"api/add-movie?username={UserAuth.Name}", newMovie);
+                    if (res.IsSuccessStatusCode)
                     {
-                        imdbId = SelectedMovie.imdbID
-                    };
-                    var res = await Http.PostAsJsonAsync($"api/add-movie", newMovie);
-                //}
+                        toastContent = $"{SelectedMovie.Title} added to your favorites!";
+                        StateHasChanged();
+                        await ToastObj.ShowAsync();
+                    }
+                    else
+                    {
+                        toastContent = $"Failed to add movie {SelectedMovie.Title} to your favorites!  Something went wrong";
+                        toastSuccess = "e-toast-danger";
+                        StateHasChanged();
+                        await ToastObj.ShowAsync();
+                    }
+                } else
+                {
+                    toastContent = $"Login to add movies to your collection of favorites.";
+                    toastSuccess = "e-toast-danger";
+                    StateHasChanged();
+                    await ToastObj.ShowAsync();
+                }
+            } else
+            {
+                toastContent = $"Please select a movie";
+                toastSuccess = "e-toast-warning";
+                StateHasChanged();
+                await ToastObj.ShowAsync();
             }
         }
     }

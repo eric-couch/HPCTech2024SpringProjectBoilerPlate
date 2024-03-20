@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using HPCTech2024SpringProjectBoilerPlate.Client;
 using Syncfusion.Blazor;
+using HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCfUx0QHxbf1x0ZFREal1STnZaUj0eQnxTdEFjWn5WcXZURWBZU0V0Xg==");
 
@@ -16,6 +17,7 @@ builder.Services.AddHttpClient("HPCTech2024SpringProjectBoilerPlate.ServerAPI", 
 // Supply HttpClient instances that include access tokens when making requests to the server project
 builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("HPCTech2024SpringProjectBoilerPlate.ServerAPI"));
 
+builder.Services.AddScoped<IUserHttpRepository, UserMoviesHttpRepository>();
 builder.Services.AddApiAuthorization();
 builder.Services.AddSyncfusionBlazor();
 await builder.Build().RunAsync();

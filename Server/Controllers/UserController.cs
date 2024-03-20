@@ -5,6 +5,7 @@ using HPCTech2024SpringProjectBoilerPlate.Server.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Server.Controllers;
 
@@ -38,9 +39,9 @@ public class UserController : Controller
 
     [HttpPost]
     [Route("api/add-movie")]
-    public async Task<IActionResult> AddMovie([FromBody] Movie movie)
+    public async Task<IActionResult> AddMovie(string username, [FromBody] Movie movie)
     {
-        var user = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var user = await _userManager.FindByNameAsync(username);
         if (user is null)
         {
             return NotFound();
@@ -50,5 +51,19 @@ public class UserController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
+    }
+
+    [HttpGet]
+    [Route("api/get-roles/{id}")]
+    [Authorize(Roles ="Admin")]
+    public async Task<List<string>> GetRoles(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+        {
+            return null;
+        }
+        var roles = await _userManager.GetRolesAsync(user);
+        return roles.ToList();
     }
 }

@@ -2,6 +2,7 @@
 @using HPCTech2024SpringProjectBoilerPlate.Client.Components
 @using Syncfusion.Blazor.Spinner
 @using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Notifications
 
 
 @if (UserFavoriteMovies?.Any() ?? false)
@@ -14,3 +15,12 @@
     </ul>
     <MovieDetails Movie=Movie />
 }
+
+<SfToast    @ref="ToastObj"
+            Content="@toastContent"
+            ShowCloseButton="true"
+            ShowProgressBar="true"
+            CssClass="@toastSuccess"
+            Timeout="3000">
+        <ToastPosition X="Center" Y="Top"></ToastPosition>
+</SfToast>
