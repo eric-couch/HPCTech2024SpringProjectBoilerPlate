@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using HPCTech2024SpringProjectBoilerPlate.Client;
 using Syncfusion.Blazor;
 using HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
+using Blazored.LocalStorage;
 
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCfUx0QHxbf1x0ZFREal1STnZaUj0eQnxTdEFjWn5WcXZURWBZU0V0Xg==");
 
@@ -20,4 +21,5 @@ builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().Cre
 builder.Services.AddScoped<IUserHttpRepository, UserMoviesHttpRepository>();
 builder.Services.AddApiAuthorization();
 builder.Services.AddSyncfusionBlazor();
+builder.Services.AddBlazoredLocalStorage();
 await builder.Build().RunAsync();

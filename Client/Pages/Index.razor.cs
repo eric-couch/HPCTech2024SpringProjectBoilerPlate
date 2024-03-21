@@ -44,4 +44,16 @@ public partial class Index
         Movie = movie;
         await Task.CompletedTask;
     }
+
+    private async Task RemoveMovie(OMDBMovie movie)
+    {
+        var UserAuth = (await AuthenticationStateProvider.GetAuthenticationStateAsync()).User.Identity;
+        if (UserAuth is not null && UserAuth.IsAuthenticated)
+        {
+            var res = await UserMoviesHttpRepository.DeleteUserMovie(UserAuth.Name, movie);
+            UserFavoriteMovies.Remove(movie);
+            StateHasChanged();
+
+        }
+    }
 }

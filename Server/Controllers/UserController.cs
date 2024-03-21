@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Server.Controllers;
 
+// call to the server (http://localhost:xxxx/api/user) will call some method in here
+// if that call is specific like (http://localhost:xxxx/api/user/) or (http://localhost:xxxx/api/add-movie) calls the appropriate method
 public class UserController : Controller
 {
 
@@ -51,6 +53,27 @@ public class UserController : Controller
             await _context.SaveChangesAsync();
             return Ok();
         }
+    }
+
+    [HttpPost]
+    [Route("api/remove-movie")]
+    public async Task<IActionResult> RemoveFavoriteMovie(string username, [FromBody] Movie movie)
+    {
+        try
+        {
+            var movietoRemove = _context.Users.Include(u => u.FavoriteMovies)
+                                .FirstOrDefault(u => u.UserName == username)
+                                .FavoriteMovies.FirstOrDefault(m => m.imdbId == movie.imdbId);
+            
+            _context.Users.FirstOrDefault(u => u.UserName == username)
+                            .FavoriteMovies.Remove(movietoRemove);
+            _context.SaveChanges();
+            return Ok();
+        } catch (Exception e)
+        {
+            return NotFound();
+        }
+        
     }
 
     [HttpGet]

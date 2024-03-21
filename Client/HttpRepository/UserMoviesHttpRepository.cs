@@ -3,6 +3,7 @@ using HPCTech2024SpringProjectBoilerPlate.Shared.Wrapper;
 using static System.Net.WebRequestMethods;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Blazored.LocalStorage;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
 
@@ -11,10 +12,28 @@ public class UserMoviesHttpRepository : IUserHttpRepository
     private readonly string OMDBAPIUrl = "https://www.omdbapi.com/?apikey=";
     private readonly string OMDBAPIKey = "86c39163";
     private readonly HttpClient _httpClient;
+    private readonly ILocalStorageService _localStorageService;
 
-    public UserMoviesHttpRepository(HttpClient httpClient)
+    public UserMoviesHttpRepository(HttpClient httpClient, ILocalStorageService localStorage)
     {
         _httpClient = httpClient;
+        _localStorageService = localStorage;
+    }
+
+    public async Task<bool> DeleteUserMovie(string userName, OMDBMovie movie)
+    {
+        var newMovie = new Movie()
+        {
+            imdbId = movie.imdbID
+        };
+        var res = await _httpClient.PostAsJsonAsync($"api/remove-movie?username={userName}", newMovie);
+        if (res.IsSuccessStatusCode)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     }
 
     public async Task<DataResponse<List<OMDBMovie>>> GetUserMovies(string userName)
@@ -27,7 +46,13 @@ public class UserMoviesHttpRepository : IUserHttpRepository
             {
                 foreach (var movie in userDto.FavoriteMovies)
                 {
-                    OMDBMovie oMDBMovie = await _httpClient.GetFromJsonAsync<OMDBMovie>($"{OMDBAPIUrl}{OMDBAPIKey}&i={movie.imdbId}");
+                    OMDBMovie oMDBMovie = new OMDBMovie();
+                    oMDBMovie = await _localStorageService.GetItemAsync<OMDBMovie>(movie.imdbId);
+                    if (oMDBMovie == null)
+                    {
+                        oMDBMovie = await _httpClient.GetFromJsonAsync<OMDBMovie>($"{OMDBAPIUrl}{OMDBAPIKey}&i={movie.imdbId}");
+                        await _localStorageService.SetItemAsync(movie.imdbId, oMDBMovie);
+                    }
                     MovieDetails.Add(oMDBMovie);
                 }
                 return new DataResponse<List<OMDBMovie>>() 

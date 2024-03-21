@@ -10,7 +10,8 @@
     <ul>
     @foreach (var movie in UserFavoriteMovies)
     {
-            <li><a href="#" @onclick="@(() => ShowMovieDetails(movie))" @onclick:preventDefault style="text-decoration:none;color:black">  @movie.Title (@movie.Year)</a></li>
+            <li><a href="#" @onclick="@(() => ShowMovieDetails(movie))" @onclick:preventDefault style="text-decoration:none;color:black">  @movie.Title (@movie.Year)</a>
+                <a href="#" @onclick="@(() => RemoveMovie(movie))" style="color:red">X</a></li>
     }
     </ul>
     <MovieDetails Movie=Movie />
