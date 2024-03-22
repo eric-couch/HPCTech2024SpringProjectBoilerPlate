@@ -8,7 +8,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCTech2024SpringProjectBoi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCTech2024SpringProjectBoilerPlate.Shared", "Shared\HPCTech2024SpringProjectBoilerPlate.Shared.csproj", "{04B79F92-9F50-48F2-9C6D-979C27B3D240}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCTech2024SpringProjectBoilerPlate.Client.Test", "HPCTech2024SpringProjectBoilerPlate.Client.Test\HPCTech2024SpringProjectBoilerPlate.Client.Test.csproj", "{2125B788-CD4B-400F-AE97-23B3DD462922}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HPCTech2024SpringProjectBoilerPlate.Client.Test", "HPCTech2024SpringProjectBoilerPlate.Client.Test\HPCTech2024SpringProjectBoilerPlate.Client.Test.csproj", "{2125B788-CD4B-400F-AE97-23B3DD462922}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HPCTech2024SpringProjectBoilerPlate.Server.Test", "HPCTech2024SpringProjectBoilerPlate.Server.Test\HPCTech2024SpringProjectBoilerPlate.Server.Test.csproj", "{E954944C-3997-4E56-9EF3-309D27F88DBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,18 @@ Global
 		{2125B788-CD4B-400F-AE97-23B3DD462922}.Release|x64.Build.0 = Release|Any CPU
 		{2125B788-CD4B-400F-AE97-23B3DD462922}.Release|x86.ActiveCfg = Release|Any CPU
 		{2125B788-CD4B-400F-AE97-23B3DD462922}.Release|x86.Build.0 = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|x64.Build.0 = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Debug|x86.Build.0 = Debug|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|x64.ActiveCfg = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|x64.Build.0 = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|x86.ActiveCfg = Release|Any CPU
+		{E954944C-3997-4E56-9EF3-309D27F88DBA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

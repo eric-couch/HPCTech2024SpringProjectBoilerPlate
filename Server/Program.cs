@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using HPCTech2024SpringProjectBoilerPlate.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// log right here
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -36,6 +39,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddIdentityServerJwt();
 
+builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
