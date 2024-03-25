@@ -20,6 +20,37 @@ public class UserMoviesHttpRepository : IUserHttpRepository
         _localStorageService = localStorage;
     }
 
+    public async Task<bool> ToggleAdminUser(string userId)
+    {
+        var res = await _httpClient.GetFromJsonAsync<bool>($"api/toggle-admin?userId={userId}");
+        return res;
+        // add error handling
+    }
+
+    public async Task<DataResponse<List<UserEditDto>>> GetAllUsersAsync()
+    {
+        try
+        {
+            var users = await _httpClient.GetFromJsonAsync<List<UserEditDto>>("api/users");
+            return new DataResponse<List<UserEditDto>>()
+            {
+                Data = users,
+                Message = "Success",
+                Succeeded = true
+            };
+        } catch (Exception ex)
+        {
+            // add logging
+            return new DataResponse<List<UserEditDto>>()
+            {
+                Errors = new Dictionary<string, string[]> { { "Error", new string[] { ex.Message } } },
+                Data = new List<UserEditDto>(),
+                Message = ex.Message,
+                Succeeded = false
+            };
+        }
+    }
+
     public async Task<bool> DeleteUserMovie(string userName, OMDBMovie movie)
     {
         var newMovie = new Movie()

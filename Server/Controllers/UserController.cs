@@ -22,11 +22,30 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    [Route("api/toggle-admin")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> ToggleAdmin(string userId)
+    {
+        bool res = await _userService.ToggleAdminService(userId);
+        return res;
+    }
+
+    [HttpGet]
     [Route("api/user")]
     public async Task<UserDto> GetUserMovies(string userName)
     {
+        //var um = await _userManager.FindByIdAsync(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
         var user = await _userService.GetMovies(userName);
         return user;
+    }
+
+    [HttpGet]
+    [Route("api/users")]
+    [Authorize(Roles="Admin")]
+    public async Task<List<UserEditDto>> GetAllUsers()
+    {
+        return await _userService.GetAllUsers();
     }
 
     //[HttpPost]
