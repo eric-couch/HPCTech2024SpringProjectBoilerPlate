@@ -6,7 +6,7 @@ using Syncfusion.Blazor;
 using HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
 using Blazored.LocalStorage;
 
-Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Ngo9BigBOggjHTQxAR8/V1NBaF5cXmZCfUx0QHxbf1x0ZFREal1STnZaUj0eQnxTdEFjWn5WcXZURWBZU0V0Xg==");
+Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzE4Mzc1MkAzMjM1MmUzMDJlMzBJRW5EMEpOWXlLOFVTTWlHdTYvMzZmWDhsSlZxNHdlODJOcE9nZ3RNQXR3PQ== ");
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

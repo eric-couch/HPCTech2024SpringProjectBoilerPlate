@@ -30,6 +30,16 @@ public class UserController : Controller
         return res;
     }
 
+    //toggle-email-confirmed
+    [HttpGet]
+    [Route("api/toggle-email-confirmed")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> ToggleEmailConfirmed(string userId)
+    {
+        bool res = await _userService.ToggleEmailConfirmedService(userId);
+        return res;
+    }
+
     [HttpGet]
     [Route("api/user")]
     public async Task<UserDto> GetUserMovies(string userName)
@@ -38,6 +48,24 @@ public class UserController : Controller
 
         var user = await _userService.GetMovies(userName);
         return user;
+    }
+
+    [HttpPost]
+    [Route("api/update-user")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> UpdateUser([FromBody] UserEditDto user)
+    {
+        var res = await _userService.UpdateUser(user);
+        return res;
+    }
+
+    //api/delete-user
+    [HttpGet]
+    [Route("api/delete-user")]
+    [Authorize(Roles = "Admin")]
+    public async Task<bool> DeleteUser(string userId)
+    {
+        return await _userService.DeleteUser(userId);
     }
 
     [HttpGet]

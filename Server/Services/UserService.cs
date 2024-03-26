@@ -37,6 +37,17 @@ public class UserService : IUserService
         return movies;
     }
 
+    public async Task<bool> DeleteUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is not null)
+        {
+            var res = await _userManager.DeleteAsync(user);
+            return res.Succeeded;
+        }
+        return false;
+    }
+
     public async Task<List<UserEditDto>> GetAllUsers()
     {
         var users = (from u in _context.Users
@@ -59,7 +70,32 @@ public class UserService : IUserService
         return users;
 
     }
-
+    public async Task<bool> UpdateUser(UserEditDto user)
+    {
+        var userToUpdate = await _userManager.FindByIdAsync(user.Id);
+        if (userToUpdate is null)
+        {
+            return false;
+        }
+        if (user.EmailConfirmed != userToUpdate.EmailConfirmed)
+        {
+            userToUpdate.EmailConfirmed = user.EmailConfirmed;
+        }
+        var roles = await _userManager.GetRolesAsync(userToUpdate);
+        if (!user.Admin && roles.Contains("Admin"))
+        {
+            await _userManager.RemoveFromRoleAsync(userToUpdate, "Admin");
+        } else if (user.Admin && !roles.Contains("Admin"))
+        {
+            await _userManager.AddToRoleAsync(userToUpdate, "Admin");
+        }
+        userToUpdate.UserName = user.UserName;
+        userToUpdate.Email = user.Email;
+        userToUpdate.FirstName = user.FirstName;
+        userToUpdate.LastName = user.LastName;
+        await _context.SaveChangesAsync();
+        return true;
+    }
 
     public async Task<bool> ToggleAdminService(string userId)
     {
@@ -77,6 +113,18 @@ public class UserService : IUserService
         {
             await _userManager.AddToRoleAsync(user, "Admin");
         }
+        return true;
+    }
+
+    public async Task<bool> ToggleEmailConfirmedService(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user is null)
+        {
+            return false;
+        }
+        user.EmailConfirmed = !user.EmailConfirmed;
+        await _context.SaveChangesAsync();
         return true;
     }
 }

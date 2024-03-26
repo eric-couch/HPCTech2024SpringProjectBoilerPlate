@@ -26,7 +26,12 @@ public class UserMoviesHttpRepository : IUserHttpRepository
         return res;
         // add error handling
     }
-
+    public async Task<bool> ToggleEmailConfirmedUser(string userId)
+    {
+        var res = await _httpClient.GetFromJsonAsync<bool>($"api/toggle-email-confirmed?userId={userId}");
+        return res;
+        // add error handling
+    }
     public async Task<DataResponse<List<UserEditDto>>> GetAllUsersAsync()
     {
         try
@@ -49,6 +54,22 @@ public class UserMoviesHttpRepository : IUserHttpRepository
                 Succeeded = false
             };
         }
+    }
+
+    public async Task<bool> UpdateUser(UserEditDto user)
+    {
+        var res = await _httpClient.PostAsJsonAsync("api/update-user", user);
+        if (res.IsSuccessStatusCode) 
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public async Task<bool> DeleteUser(string userId)
+    {
+        var res = await _httpClient.GetFromJsonAsync<bool>($"api/delete-user?userId={userId}");
+        return res;
     }
 
     public async Task<bool> DeleteUserMovie(string userName, OMDBMovie movie)
