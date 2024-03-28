@@ -7,14 +7,20 @@
 
 @if (UserFavoriteMovies?.Any() ?? false)
 {
-    <ul>
+    <div class="container">
+            <div class="row">
     @foreach (var movie in UserFavoriteMovies)
     {
-            <li><a href="#" @onclick="@(() => ShowMovieDetails(movie))" @onclick:preventDefault style="text-decoration:none;color:black">  @movie.Title (@movie.Year)</a>
-                <a href="#" @onclick="@(() => RemoveMovie(movie))" style="color:red">X</a></li>
+        
+                <div class="col-md-2 my-4">
+                        <MovieDetails Movie=movie />
+                </div>
+            
+            @* <li><a href="#" @onclick="@(() => ShowMovieDetails(movie))" @onclick:preventDefault style="text-decoration:none;color:black">  @movie.Title (@movie.Year)</a>
+                <a href="#" @onclick="@(() => RemoveMovie(movie))" style="color:red">X</a></li> *@
     }
-    </ul>
-    <MovieDetails Movie=Movie />
+        </div>
+    </div>
 }
 
 <SfToast    @ref="ToastObj"

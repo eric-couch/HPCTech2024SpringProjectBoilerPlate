@@ -20,6 +20,24 @@ public class UserMoviesHttpRepository : IUserHttpRepository
         _localStorageService = localStorage;
     }
 
+    public async Task<MovieSearchResult> SearchOMDBApi(string searchTerm, int page)
+    {
+        var searchResults = await _httpClient.GetFromJsonAsync<MovieSearchResult>($"{OMDBAPIUrl}{OMDBAPIKey}&s={searchTerm}&page={page}");
+        if (searchResults?.Search?.Any() ?? false)
+        {
+            foreach (var movie in searchResults.Search)
+            {
+                var movieDetails = await _localStorageService.GetItemAsync<OMDBMovie>(movie.imdbID);
+                if (movieDetails == null)
+                {
+                    movieDetails = await _httpClient.GetFromJsonAsync<OMDBMovie>($"{OMDBAPIUrl}{OMDBAPIKey}&i={movie.imdbID}");
+                    await _localStorageService.SetItemAsync(movie.imdbID, movieDetails);
+                }
+            }
+        }
+        return searchResults;
+    }
+
     public async Task<bool> ToggleAdminUser(string userId)
     {
         var res = await _httpClient.GetFromJsonAsync<bool>($"api/toggle-admin?userId={userId}");

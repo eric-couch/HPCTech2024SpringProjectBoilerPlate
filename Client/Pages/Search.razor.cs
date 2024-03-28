@@ -7,6 +7,7 @@ using Syncfusion.Blazor.Grids;
 using Syncfusion.Blazor.Navigations;
 using Syncfusion.Blazor.Notifications;
 using Microsoft.AspNetCore.Components.Authorization;
+using HPCTech2024SpringProjectBoilerPlate.Client.HttpRepository;
 
 namespace HPCTech2024SpringProjectBoilerPlate.Client.Pages;
 
@@ -16,14 +17,14 @@ public partial class Search
     HttpClient Http { get; set; }
     [Inject]
     AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+    [Inject]
+    IUserHttpRepository UserHttpRepository { get; set; }
 
     private string searchTerm;
     private MovieSearchResult searchResults = new MovieSearchResult();
     private List<MovieSearchResultItem> OMDBMovies { get; set; }
     int TotalItems = 0;
     int page = 1;
-    private readonly string OMDBAPIUrl = "https://www.omdbapi.com/?apikey=";
-    private readonly string OMDBAPIKey = "86c39163";
     public SfGrid<MovieSearchResultItem> movieGrid;
     public SfPager Page;
     public SfToast ToastObj;
@@ -94,7 +95,8 @@ public partial class Search
     {
         try
         {
-            searchResults = await Http.GetFromJsonAsync<MovieSearchResult>($"{OMDBAPIUrl}{OMDBAPIKey}&s={searchTerm}&page={page}");
+            //searchResults = await Http.GetFromJsonAsync<MovieSearchResult>($"{OMDBAPIUrl}{OMDBAPIKey}&s={searchTerm}&page={page}");
+            searchResults = await UserHttpRepository.SearchOMDBApi(searchTerm, page);
             if (searchResults is not null)
             {
                 OMDBMovies = searchResults.Search.ToList();
